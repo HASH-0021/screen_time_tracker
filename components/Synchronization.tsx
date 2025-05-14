@@ -124,8 +124,10 @@ const styles = StyleSheet.create({
   syncSection: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
   },
   syncText: {
+    flex: 0.9,
     fontSize: 14,
   },
   syncDescription: {
