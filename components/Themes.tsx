@@ -8,11 +8,11 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import Monicon from '@monicon/native';
 
 import {updateSettingsData} from '../redux/features/settingsSlice';
 import NavigationSection from '../sub_components/NavigationSection';
 import {themes} from '../helpers/colors';
-import Monicon from '@monicon/native';
 
 const Themes: React.FC<any> = ({navigation}) => {
   const settingsData = useSelector((state: any) => state.settings);

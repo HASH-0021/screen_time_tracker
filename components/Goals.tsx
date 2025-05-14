@@ -3,6 +3,7 @@ import {
   Alert,
   Button,
   NativeModules,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
@@ -15,6 +16,7 @@ import {updateSettingsData} from '../redux/features/settingsSlice';
 import NavigationSection from '../sub_components/NavigationSection';
 import LoadingIndicator from '../sub_components/LoadingIndicator';
 import {themes} from '../helpers/colors';
+import InfoDialogBox from '../sub_components/InfoDialogBox';
 
 const Goals: React.FC<any> = ({navigation}) => {
   const [isDtgEnabled, setIsDtgEnabled] = useState(false);
@@ -29,6 +31,7 @@ const Goals: React.FC<any> = ({navigation}) => {
   const [dagBuMinutes, setDagBuMinutes] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [indicatorColor, setIndicatorColor] = useState('#0000ff');
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [loadingText, setLoadingText] = useState('Loading');
 
   const settingsData = useSelector((state: any) => state.settings);
@@ -237,11 +240,12 @@ const Goals: React.FC<any> = ({navigation}) => {
             color: 'blue',
           },
           {
-            name: 'HomeScreen',
-            icon: 'mdi:home',
-            color: 'orange',
+            name: 'Info',
+            icon: 'tabler:info-circle',
+            color: 'yellow',
           },
         ]}
+        setIsInfoVisible={setIsInfoVisible}
       />
       <Text style={[styles.heading, theme.basic]}>Goals</Text>
       <ScrollView contentContainerStyle={styles.goalsList}>
@@ -354,11 +358,7 @@ const Goals: React.FC<any> = ({navigation}) => {
           </View>
           <Text style={[theme.basic, styles.goalDescription]}>
             Setting this goal helps by color coding daily total usage statistics
-            throughout the app. Good usage (green) is triggered when usage is
-            below good usage ending time. Bad usage (red) is triggered when
-            usage is above bad usage starting time. Moderate usage (orange) is
-            triggered when usage is between good usage and bad usage. This
-            doesn't set the notification alert.
+            throughout the app.
           </Text>
         </View>
         <View
@@ -474,14 +474,29 @@ const Goals: React.FC<any> = ({navigation}) => {
           </View>
           <Text style={[theme.basic, styles.goalDescription]}>
             Setting this goal helps by color coding daily app usage statistics
-            throughout the app. Good usage (green) is triggered when usage is
-            below good usage ending time. Bad usage (red) is triggered when
-            usage is above bad usage starting time. Moderate usage (orange) is
-            triggered when usage is between good usage and bad usage. This
-            doesn't set the notification alert.
+            throughout the app.
           </Text>
         </View>
       </ScrollView>
+      <InfoDialogBox isVisible={isInfoVisible} setIsVisible={setIsInfoVisible}>
+        <Text style={styles.infoDescription}>
+          Setting the goals doesn't set the notification alert. If goal time is
+          updated, then the notification alerts (if enabled) trigger using the
+          updated goal time.
+        </Text>
+        <Text style={styles.infoDescription}>
+          Good Usage : Usage is below good usage ending time. Screen time value
+          is colored green.
+        </Text>
+        <Text style={styles.infoDescription}>
+          Bad Usage : Usage is above bad usage starting time. Screen time value
+          is colored red.
+        </Text>
+        <Text style={styles.infoDescription}>
+          Moderate Usage : Usage is between good usage and bad usage. Screen
+          time value is colored orange.
+        </Text>
+      </InfoDialogBox>
       <LoadingIndicator
         isLoading={isLoading}
         setIsLoading={setIsLoading}
@@ -551,6 +566,12 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontStyle: 'italic',
     fontSize: 12,
+  },
+  infoDescription: {
+    marginVertical: 5,
+    fontSize: 18,
+    textAlign: 'left',
+    color: 'black',
   },
 });
 

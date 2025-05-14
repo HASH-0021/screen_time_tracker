@@ -12,11 +12,13 @@ import {useSelector} from 'react-redux';
 import Monicon from '@monicon/native';
 
 import NavigationSection from '../sub_components/NavigationSection';
+import InfoDialogBox from '../sub_components/InfoDialogBox';
 import {themes} from '../helpers/colors';
 import {convertToTimeStamp} from '../helpers/tools';
 
 const Synchronization: React.FC<any> = ({navigation}) => {
   const [syncTime, setSyncTime] = useState(0);
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
 
   const settingsData = useSelector((state: any) => state.settings);
   const colorScheme = useSelector((state: any) => state.colorScheme);
@@ -63,11 +65,12 @@ const Synchronization: React.FC<any> = ({navigation}) => {
             color: 'blue',
           },
           {
-            name: 'HomeScreen',
-            icon: 'mdi:home',
-            color: 'orange',
+            name: 'Info',
+            icon: 'tabler:info-circle',
+            color: 'yellow',
           },
         ]}
+        setIsInfoVisible={setIsInfoVisible}
       />
       <Text style={[styles.heading, theme.basic]}>Synchronization</Text>
       <ScrollView contentContainerStyle={styles.syncList}>
@@ -88,13 +91,17 @@ const Synchronization: React.FC<any> = ({navigation}) => {
             </Pressable>
           </View>
           <Text style={[theme.basic, styles.syncDescription]}>
-            App sync will be done automatically everyday at mignight (12:00 AM).
-            This app sync cannot be disabled and is helpful for the app's
-            functionality. You can sync app data at any time by pressing the
-            button.
+            App data can be synchronized at any time by pressing the button.
           </Text>
         </View>
       </ScrollView>
+      <InfoDialogBox isVisible={isInfoVisible} setIsVisible={setIsInfoVisible}>
+        <Text style={styles.infoDescription}>
+          App sync will be done automatically everyday at mignight (12:00 AM).
+          This daily app sync cannot be disabled and is helpful for the app's
+          functionality.
+        </Text>
+      </InfoDialogBox>
     </View>
   );
 };
@@ -135,6 +142,12 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontStyle: 'italic',
     fontSize: 12,
+  },
+  infoDescription: {
+    marginVertical: 5,
+    fontSize: 18,
+    textAlign: 'left',
+    color: 'black',
   },
 });
 

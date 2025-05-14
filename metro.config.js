@@ -18,6 +18,7 @@ const configWithMonicon = withMonicon(getDefaultConfig(__dirname), {
     'humbleicons:chevron-right',
     'ic:baseline-sync',
     'teenyicons:tick-circle-outline',
+    'tabler:info-circle',
   ],
   // Load all icons from the listed collections
   collections: [],

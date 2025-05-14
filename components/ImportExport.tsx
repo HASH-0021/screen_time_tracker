@@ -14,6 +14,7 @@ import {useSelector} from 'react-redux';
 import {pick, pickDirectory} from '@react-native-documents/picker';
 
 import NavigationSection from '../sub_components/NavigationSection';
+import InfoDialogBox from '../sub_components/InfoDialogBox';
 import LoadingIndicator from '../sub_components/LoadingIndicator';
 import {themes} from '../helpers/colors';
 import {decodeEncodedURI} from '../helpers/tools';
@@ -24,6 +25,7 @@ const ImportExport: React.FC<any> = ({navigation}) => {
   const [importType, setImportType] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [indicatorColor, setIndicatorColor] = useState('#0000ff');
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
   const [loadingText, setLoadingText] = useState('Loading');
 
   const settingsData = useSelector((state: any) => state.settings);
@@ -107,11 +109,12 @@ const ImportExport: React.FC<any> = ({navigation}) => {
             color: 'blue',
           },
           {
-            name: 'HomeScreen',
-            icon: 'mdi:home',
-            color: 'orange',
+            name: 'Info',
+            icon: 'tabler:info-circle',
+            color: 'yellow',
           },
         ]}
+        setIsInfoVisible={setIsInfoVisible}
       />
       <Text style={[styles.heading, theme.basic]}>Import / Export</Text>
       <ScrollView contentContainerStyle={styles.importExportList}>
@@ -142,9 +145,6 @@ const ImportExport: React.FC<any> = ({navigation}) => {
           </View>
           <Text style={[theme.basic, styles.importExportDescription]}>
             This option imports files that were exported using this app.
-            Selected file shouldn't be corrupted, otherwise the import will not
-            happen. Importing overwrites the existing app data with new data
-            from selected file, so beware before importing any modified files.
           </Text>
         </View>
         <View
@@ -175,13 +175,25 @@ const ImportExport: React.FC<any> = ({navigation}) => {
           </View>
           <Text style={[theme.basic, styles.importExportDescription]}>
             This option exports app data to a file named
-            "screen_time_tracker_data.json". If the file with the same name
-            exists in the selected folder, then this overwrites that file (not
-            append to that file). If no file is present with same name in the
-            selected folder, then a new file will be created.
+            "screen_time_tracker_data.json".
           </Text>
         </View>
       </ScrollView>
+      <InfoDialogBox isVisible={isInfoVisible} setIsVisible={setIsInfoVisible}>
+        <Text style={styles.infoDescription}>
+          While importing, the selected file shouldn't be corrupted, otherwise
+          the import will not happen. Importing{' '}
+          <Text style={{color: 'red'}}>overwrites</Text> the existing app data
+          with new data from selected file, so beware before importing any
+          modified files.
+        </Text>
+        <Text style={styles.infoDescription}>
+          While exporting, if the file with the same name exists in the selected
+          folder, then exporting <Text style={{color: 'red'}}>overwrites</Text>{' '}
+          that file (not append to that file). If no file is present with same
+          name in the selected folder, then a new file will be created.
+        </Text>
+      </InfoDialogBox>
       <LoadingIndicator
         isLoading={isLoading}
         setIsLoading={setIsLoading}
@@ -240,6 +252,12 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontStyle: 'italic',
     fontSize: 15,
+  },
+  infoDescription: {
+    marginVertical: 5,
+    fontSize: 18,
+    textAlign: 'left',
+    color: 'black',
   },
 });
 
