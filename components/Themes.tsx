@@ -12,6 +12,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {updateSettingsData} from '../redux/features/settingsSlice';
 import NavigationSection from '../sub_components/NavigationSection';
 import {themes} from '../helpers/colors';
+import Monicon from '@monicon/native';
 
 const Themes: React.FC<any> = ({navigation}) => {
   const settingsData = useSelector((state: any) => state.settings);
@@ -65,6 +66,13 @@ const Themes: React.FC<any> = ({navigation}) => {
           }}
           style={[styles.themesOption, {borderColor: theme.basic.color}]}>
           <Text style={[styles.themesName, theme.basic]}>Automatic</Text>
+          {settingsData.theme === 'automatic' && (
+            <Monicon
+              name="teenyicons:tick-circle-outline"
+              size={15}
+              color="limegreen"
+            />
+          )}
         </Pressable>
         <Pressable
           onPress={() => updateTheme('dark')}
@@ -79,6 +87,13 @@ const Themes: React.FC<any> = ({navigation}) => {
             {borderTopWidth: 0, borderColor: theme.basic.color},
           ]}>
           <Text style={[styles.themesName, theme.basic]}>Dark</Text>
+          {settingsData.theme === 'dark' && (
+            <Monicon
+              name="teenyicons:tick-circle-outline"
+              size={15}
+              color="limegreen"
+            />
+          )}
         </Pressable>
         <Pressable
           onPress={() => updateTheme('light')}
@@ -93,6 +108,13 @@ const Themes: React.FC<any> = ({navigation}) => {
             {borderTopWidth: 0, borderColor: theme.basic.color},
           ]}>
           <Text style={[styles.themesName, theme.basic]}>Light</Text>
+          {settingsData.theme === 'light' && (
+            <Monicon
+              name="teenyicons:tick-circle-outline"
+              size={15}
+              color="limegreen"
+            />
+          )}
         </Pressable>
       </ScrollView>
     </View>
@@ -118,6 +140,9 @@ const styles = StyleSheet.create({
     padding: '4%',
     borderTopWidth: 1,
     borderBottomWidth: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
   themesName: {
     fontSize: 20,

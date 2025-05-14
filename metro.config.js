@@ -1,5 +1,5 @@
 const {getDefaultConfig, mergeConfig} = require('@react-native/metro-config');
-const { withMonicon } = require("@monicon/metro");
+const {withMonicon} = require('@monicon/metro');
 
 /**
  * Metro configuration
@@ -10,16 +10,21 @@ const { withMonicon } = require("@monicon/metro");
 const config = {};
 
 const configWithMonicon = withMonicon(getDefaultConfig(__dirname), {
-    icons: [
-      "mdi:home",
-      "lucide:bar-chart-3",
-      "ion:settings-sharp",
-      "humbleicons:chevron-left",
-      "humbleicons:chevron-right",
-      "ic:baseline-sync"
-    ],
-    // Load all icons from the listed collections
-    collections: [],
-  });
+  icons: [
+    'mdi:home',
+    'lucide:bar-chart-3',
+    'ion:settings-sharp',
+    'humbleicons:chevron-left',
+    'humbleicons:chevron-right',
+    'ic:baseline-sync',
+    'teenyicons:tick-circle-outline',
+  ],
+  // Load all icons from the listed collections
+  collections: [],
+});
 
-module.exports = mergeConfig(getDefaultConfig(__dirname), configWithMonicon, config);
+module.exports = mergeConfig(
+  getDefaultConfig(__dirname),
+  configWithMonicon,
+  config,
+);
