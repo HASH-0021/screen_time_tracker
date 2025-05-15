@@ -30,7 +30,12 @@ const AppList: React.FC<AppListProps> = ({usageStats, isDailyList}) => {
   return (
     <View style={styles.appList}>
       <Text style={[styles.heading, theme.basic]}>App List</Text>
-      <View style={[styles.itemContainer, theme.basic]}>
+      <View
+        style={[
+          styles.itemContainer,
+          theme.basic,
+          {borderColor: theme.basic.color},
+        ]}>
         <Text
           style={[
             styles.headerText,
@@ -49,7 +54,13 @@ const AppList: React.FC<AppListProps> = ({usageStats, isDailyList}) => {
         </Text>
       </View>
       {usageStats.map((appUsage: AppUsageProps, idx: number) => (
-        <View key={`item-${idx}`} style={[styles.itemContainer, theme.basic]}>
+        <View
+          key={`item-${idx}`}
+          style={[
+            styles.itemContainer,
+            theme.basic,
+            {borderColor: theme.basic.color},
+          ]}>
           <View style={styles.appInfo}>
             <Image
               source={{uri: `data:image/png;base64,${appUsage.appIconBase64}`}}
@@ -99,14 +110,16 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   itemContainer: {
-    marginVertical: '2%',
-    paddingVertical: '1%',
-    paddingHorizontal: '2%',
+    marginVertical: '1%',
+    paddingVertical: '2%',
+    paddingHorizontal: '3%',
     width: '100%',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    borderRadius: 10,
-    elevation: 10,
+    alignItems: 'center',
+    borderWidth: 0.05,
+    borderRadius: 12,
+    elevation: 5,
   },
   headerText: {
     fontSize: 15,
@@ -114,9 +127,10 @@ const styles = StyleSheet.create({
   },
   appInfo: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   appIcon: {
-    marginRight: 5,
+    marginRight: 7,
     width: 22,
     height: 22,
   },
