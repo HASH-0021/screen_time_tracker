@@ -35,8 +35,8 @@ const themes: ThemeProps = {
       shadowColor: 'white',
     },
     status: {
-      backgroundColor: 'darkgray',
-      barStyle: 'dark-content',
+      backgroundColor: 'dimgray',
+      barStyle: 'light-content',
     },
   },
 };

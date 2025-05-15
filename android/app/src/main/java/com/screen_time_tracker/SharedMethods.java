@@ -177,7 +177,11 @@ public class SharedMethods {
                 if (event.getEventType() == UsageEvents.Event.ACTIVITY_PAUSED) {
                     Long eventStartTime = foregroundEvents.remove(event.getPackageName());
                     if (eventStartTime == null) {
-                        eventStartTime = startTime;
+                        if (usageStatsMap.isEmpty()) {
+                            eventStartTime = startTime;
+                        } else {
+                            continue;
+                        }
                     }
                     Long duration = event.getTimeStamp() - eventStartTime;
                     usageStatsMap.put(event.getPackageName(), usageStatsMap.getOrDefault(event.getPackageName(), 0L) + duration);

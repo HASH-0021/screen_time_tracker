@@ -14,6 +14,7 @@ import {
 import {useSelector} from 'react-redux';
 
 import NavigationSection from '../sub_components/NavigationSection';
+import InfoDialogBox from '../sub_components/InfoDialogBox';
 import {themes} from '../helpers/colors';
 
 const Notifications: React.FC<any> = ({navigation}) => {
@@ -26,6 +27,7 @@ const Notifications: React.FC<any> = ({navigation}) => {
   const [isPSTNEnabled, setIsPSTNEnabled] = useState(false);
   const [isDTGNEnabled, setIsDTGNEnabled] = useState(false);
   const [isDAGNEnabled, setIsDAGNEnabled] = useState(false);
+  const [isInfoVisible, setIsInfoVisible] = useState(false);
 
   const settingsData = useSelector((state: any) => state.settings);
   const colorScheme = useSelector((state: any) => state.colorScheme);
@@ -124,7 +126,7 @@ const Notifications: React.FC<any> = ({navigation}) => {
     {
       name: 'persistent screen time',
       description:
-        "Persistent screen time notification requires this app's notification to be enabled in the settings and background usage setting enabled to function properly. Enabling this notification can effect battery consumption. This is a persistent notification which displays self-updating current app's screen time.",
+        "Shows a persistent notification with self-updating current app's screen time.",
       value: isPSTNEnabled,
       onChange: updatePSTNState,
       disabled: !isNotificationsEnabled,
@@ -132,7 +134,7 @@ const Notifications: React.FC<any> = ({navigation}) => {
     {
       name: 'daily total goal',
       description:
-        'Daily total goal notification is shown whenever the total screen time of the device reaches moderate and bad usage. This notification requires the persistent screen time notification to be enabled.',
+        'This notification is shown whenever the total screen time of the device reaches moderate or bad usage.',
       value: isDTGNEnabled,
       onChange: updateDTGNState,
       disabled: !isPSTNEnabled,
@@ -140,7 +142,7 @@ const Notifications: React.FC<any> = ({navigation}) => {
     {
       name: 'daily app goal',
       description:
-        'Daily app goal notification is shown whenever the total screen time of the current app reaches moderate and bad usage. This notification requires the persistent screen time notification to be enabled.',
+        'This notification is shown whenever the total screen time of the current app reaches moderate or bad usage.',
       value: isDAGNEnabled,
       onChange: updateDAGNState,
       disabled: !isPSTNEnabled,
@@ -158,13 +160,14 @@ const Notifications: React.FC<any> = ({navigation}) => {
             color: 'blue',
           },
           {
-            name: 'HomeScreen',
-            icon: 'mdi:home',
-            color: 'orange',
+            name: 'Info',
+            icon: 'tabler:info-circle',
+            color: 'yellow',
           },
         ]}
+        setIsInfoVisible={setIsInfoVisible}
       />
-      <Text style={[styles.heading, , theme.basic]}>Notifications</Text>
+      <Text style={[styles.heading, theme.basic]}>Notifications</Text>
       <ScrollView contentContainerStyle={styles.notificationsList}>
         <Pressable
           onPress={openNotificationSettings}
@@ -178,9 +181,6 @@ const Notifications: React.FC<any> = ({navigation}) => {
               Open app notification settings
             </Text>
           </View>
-          <Text style={[theme.basic, styles.notificationsDescription]}>
-            Adjust the app's notification settings here.
-          </Text>
         </Pressable>
         {notificationsList.map((notification, idx) => (
           <View
@@ -221,6 +221,23 @@ const Notifications: React.FC<any> = ({navigation}) => {
           </View>
         ))}
       </ScrollView>
+      <InfoDialogBox isVisible={isInfoVisible} setIsVisible={setIsInfoVisible}>
+        <Text style={styles.infoDescription}>
+          Ensure this app's notifications are enabled to access any notification
+          setting in this screen. This can be adjusted by pressing "Open app
+          notification settings".
+        </Text>
+        <Text style={styles.infoDescription}>
+          Persistent screen time notification requires this app's background
+          usage setting enabled to function properly. Enabling this notification
+          can effect device's battery consumption.
+        </Text>
+        <Text style={styles.infoDescription}>
+          To access daily goal notification settings, enable the persistent
+          screen time notification. This ensures that the app is not consuming
+          more resources than necessary.
+        </Text>
+      </InfoDialogBox>
     </View>
   );
 };
@@ -259,6 +276,12 @@ const styles = StyleSheet.create({
     color: 'gray',
     fontStyle: 'italic',
     fontSize: 15,
+  },
+  infoDescription: {
+    marginVertical: 5,
+    fontSize: 18,
+    textAlign: 'left',
+    color: 'black',
   },
 });
 

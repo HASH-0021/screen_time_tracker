@@ -13,11 +13,13 @@ interface ScreenProps {
 interface NavigationSectionProps {
   navigation: any;
   screens: ScreenProps[];
+  setIsInfoVisible?: Function;
 }
 
 const NavigationSection: React.FC<NavigationSectionProps> = ({
   navigation,
   screens,
+  setIsInfoVisible,
 }) => {
   const settingsData = useSelector((state: any) => state.settings);
   const colorScheme = useSelector((state: any) => state.colorScheme);
@@ -45,6 +47,11 @@ const NavigationSection: React.FC<NavigationSectionProps> = ({
               navigation.navigate(screen.name);
             } else if (screen.name === 'Back') {
               navigation.goBack();
+            } else if (
+              screen.name === 'Info' &&
+              setIsInfoVisible !== undefined
+            ) {
+              setIsInfoVisible(true);
             } else {
               navigation.navigate(screen.name);
             }

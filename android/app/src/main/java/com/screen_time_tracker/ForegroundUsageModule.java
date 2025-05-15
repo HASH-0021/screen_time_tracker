@@ -139,14 +139,19 @@ public class ForegroundUsageModule extends ReactContextBaseJavaModule {
         Map<String, Long> foregroundEvents = new HashMap<>();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            for (UsageEvents.Event event : eventList) {
+            for (UsageEvents.Event event : eventList) {                
+                // Log.d(TAG, event.getPackageName()+" - "+String.valueOf(event.getEventType()));
                 if (event.getEventType() == UsageEvents.Event.ACTIVITY_RESUMED) {
                     foregroundEvents.put(event.getPackageName(), event.getTimeStamp());
                 }
-                if (event.getEventType() == UsageEvents.Event.ACTIVITY_PAUSED) {
+                if (event.getEventType() == UsageEvents.Event.ACTIVITY_PAUSED || event.getEventType() == UsageEvents.Event.ACTIVITY_STOPPED) {
                     Long eventStartTime = foregroundEvents.remove(event.getPackageName());
                     if (eventStartTime == null) {
-                        eventStartTime = startTime;
+                        if (usageStatsMap.isEmpty()) {
+                            eventStartTime = startTime;
+                        } else {
+                            continue;
+                        }
                     }
                     Long duration = event.getTimeStamp() - eventStartTime;
                     usageStatsMap.put(event.getPackageName(), usageStatsMap.getOrDefault(event.getPackageName(), 0L) + duration);
