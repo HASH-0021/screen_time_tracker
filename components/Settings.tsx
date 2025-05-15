@@ -27,10 +27,6 @@ const Settings: React.FC<any> = ({navigation}) => {
       screen: 'Notifications',
     },
     {
-      name: 'Goals',
-      screen: 'Goals',
-    },
-    {
       name: 'Import / Export',
       screen: 'ImportExport',
     },

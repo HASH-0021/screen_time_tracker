@@ -1,9 +1,11 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from 'react';
 import {
   Alert,
+  Animated,
   AppState,
   AppStateStatus,
   NativeModules,
+  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -12,6 +14,7 @@ import {
   View,
 } from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
+import Monicon from '@monicon/native';
 
 import {updateSettingsData} from '../redux/features/settingsSlice';
 import {updateColorSchemeValue} from '../redux/features/colorSchemeSlice';
@@ -32,6 +35,8 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
   const settingsData = useSelector((state: any) => state.settings);
   const colorScheme = useSelector((state: any) => state.colorScheme);
   const dispatch = useDispatch();
+
+  const animatedScale = useRef(new Animated.Value(1)).current; // Initial scale value for button
 
   const {ForegroundUsageModule, DataHandlerModule, SyncScheduleModule} =
     NativeModules;
@@ -127,6 +132,22 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
     dispatch(updateColorSchemeValue(colorSchemeValue));
   };
 
+  const buttonPressIn = () => {
+    Animated.timing(animatedScale, {
+      toValue: 0.95, // Shrink slightly
+      duration: 100, // Quick animation
+      useNativeDriver: true, // For performance
+    }).start();
+  };
+
+  const buttonPressOut = () => {
+    Animated.timing(animatedScale, {
+      toValue: 1, // Return to original size
+      duration: 150, // Slightly longer return animation
+      useNativeDriver: true,
+    }).start();
+  };
+
   const isDarkMode: boolean =
     settingsData.theme === 'automatic'
       ? colorScheme === 'dark'
@@ -184,6 +205,20 @@ const HomeScreen: React.FC<any> = ({navigation}) => {
                 </Text>
               ))}
           </View>
+          <Pressable
+            onPressIn={buttonPressIn}
+            onPressOut={buttonPressOut}
+            onPress={() => navigation.navigate('Goals')}>
+            <Animated.View
+              style={[
+                theme.basic,
+                styles.goalButton,
+                {transform: [{scale: animatedScale}]},
+              ]}>
+              <Text style={styles.goalText}>Adjust Goal</Text>
+              <Monicon name="lucide:goal" size={20} color="white" />
+            </Animated.View>
+          </Pressable>
           <AppList usageStats={usageStats} isDailyList={true} />
         </View>
       )}
@@ -204,6 +239,22 @@ const styles = StyleSheet.create({
   totalScreenTimeText: {
     fontSize: 18,
     fontWeight: '500',
+  },
+  goalButton: {
+    marginBottom: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    backgroundColor: 'darkviolet',
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderRadius: 20,
+    elevation: 10,
+  },
+  goalText: {
+    marginRight: 5,
+    color: 'white',
+    fontSize: 18,
+    fontWeight: '700',
   },
 });
 

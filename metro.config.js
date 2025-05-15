@@ -19,6 +19,7 @@ const configWithMonicon = withMonicon(getDefaultConfig(__dirname), {
     'ic:baseline-sync',
     'teenyicons:tick-circle-outline',
     'tabler:info-circle',
+    'lucide:goal',
   ],
   // Load all icons from the listed collections
   collections: [],
