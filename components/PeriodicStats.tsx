@@ -35,6 +35,7 @@ const PeriodicStats: React.FC<any> = ({navigation}) => {
   const [period, setPeriod] = useState('weekly');
   const [usageData, setUsageData] = useState({});
   const [splitUsageData, setSplitUsageData] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   const settingsData = useSelector((state: any) => state.settings);
   const colorScheme = useSelector((state: any) => state.colorScheme);
@@ -73,6 +74,7 @@ const PeriodicStats: React.FC<any> = ({navigation}) => {
       const {data, app} = await DataHandlerModule.getScreenTimeData();
       setScreenTimeData(data);
       setAppsData(app);
+      setIsLoading(false);
     } catch (error: any) {
       Alert.alert('Error', error.message);
     }
@@ -149,11 +151,14 @@ const PeriodicStats: React.FC<any> = ({navigation}) => {
           ]}
         />
         <PeriodSelector period={period} setPeriod={setPeriod} />
-        <PeriodicBarChart
-          period={period}
-          splitUsageData={splitUsageData}
-          setUsageData={setUsageData}
-        />
+        {
+          !isLoading &&
+          <PeriodicBarChart
+            period={period}
+            splitUsageData={splitUsageData}
+            setUsageData={setUsageData}
+          />
+        }
         <View style={styles.totalScreenTimeContainer}>
           <Text style={[styles.totalScreenTimeText, theme.basic]}>
             Total Screen Time :{' '}
