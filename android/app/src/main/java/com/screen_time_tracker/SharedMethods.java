@@ -174,7 +174,7 @@ public class SharedMethods {
                 if (event.getEventType() == UsageEvents.Event.ACTIVITY_RESUMED) {
                     foregroundEvents.put(event.getPackageName(), event.getTimeStamp());
                 }
-                if (event.getEventType() == UsageEvents.Event.ACTIVITY_PAUSED) {
+                if (event.getEventType() == UsageEvents.Event.ACTIVITY_PAUSED || event.getEventType() == UsageEvents.Event.ACTIVITY_STOPPED) {
                     Long eventStartTime = foregroundEvents.remove(event.getPackageName());
                     if (eventStartTime == null) {
                         if (usageStatsMap.isEmpty()) {

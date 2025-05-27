@@ -22,11 +22,13 @@ const InfoDialogBox: React.FC<InfoDialogBoxProps> = ({
       }}>
       <View style={styles.modalOverlay}>
         <View style={styles.modalContentContainer}>
-          <ScrollView contentContainerStyle={styles.modalContent}>
-            <Text style={styles.infoHeading}>Info</Text>
-            {children}
-            <Button title="Ok" onPress={() => setIsVisible(false)} />
-          </ScrollView>
+          <Text style={styles.infoHeading}>Info</Text>
+          <View style={styles.infoContentContainer}>
+            <ScrollView style={styles.infoContent}>
+              {children}
+            </ScrollView>
+          </View>
+          <Button title="Ok" onPress={() => setIsVisible(false)} />
         </View>
       </View>
     </Modal>
@@ -41,22 +43,32 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   modalContentContainer: {
-    width: '80%',
+    width: '85%',
     maxHeight: '60%',
-  },
-  modalContent: {
-    padding: 20,
-    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 15,
     alignItems: 'center',
     backgroundColor: 'lightgray',
   },
   infoHeading: {
-    margin: 5,
     fontSize: 30,
     fontWeight: '500',
     color: 'black',
     textAlign: 'center',
   },
+  infoContentContainer: {
+    marginVertical: 10,
+    paddingVertical: 2,
+    paddingHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "black",
+    borderRadius: 10
+  },
+  infoContent: {
+    flexGrow: 0,
+    maxHeight: 350,
+  }
 });
 
 export default InfoDialogBox;
