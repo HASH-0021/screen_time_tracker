@@ -312,13 +312,21 @@ public class NotificationService extends Service {
         Map<String, Long> usageStatsMap = new HashMap<>();
         Map<String, Long> foregroundEvents = new HashMap<>();
 
+        String lastPackageName = "";
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
             for (UsageEvents.Event event : eventList) {
                 if (event.getEventType() == UsageEvents.Event.ACTIVITY_RESUMED) {
-                    foregroundEvents.put(event.getPackageName(), event.getTimeStamp());
+                    if (event.getClassName() != null) {
+                        foregroundEvents.put(event.getClassName(), event.getTimeStamp());
+                        lastPackageName = event.getPackageName();
+                    }
                 }
                 if (event.getEventType() == UsageEvents.Event.ACTIVITY_PAUSED || event.getEventType() == UsageEvents.Event.ACTIVITY_STOPPED) {
-                    Long eventStartTime = foregroundEvents.remove(event.getPackageName());
+                    Long eventStartTime = null;
+                    if (event.getClassName() != null) {
+                        eventStartTime = foregroundEvents.remove(event.getClassName());
+                    }
                     if (eventStartTime == null) {
                         if (usageStatsMap.isEmpty()) {
                             eventStartTime = startTime;
@@ -348,10 +356,10 @@ public class NotificationService extends Service {
             }
         }
 
-        for (String packageName : foregroundEvents.keySet()) {
-            Long duration = endTime - foregroundEvents.get(packageName);
-            currentPackageName = packageName;
-            currentScreenTime = usageStatsMap.getOrDefault(packageName, 0L) + duration;
+        for (String className : foregroundEvents.keySet()) {
+            Long duration = endTime - foregroundEvents.get(className);
+            currentPackageName = lastPackageName;
+            currentScreenTime = usageStatsMap.getOrDefault(lastPackageName, 0L) + duration;
             totalScreenTime += duration;
         }
 
